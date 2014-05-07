@@ -1,4 +1,12 @@
 <?php
+/**
+ * Prenotazioni
+ * Generazione tabelle prenotazione
+ * @package Prenotazioni
+ * @author Scimone Ignazio
+ * @copyright 2014-2099
+ * @version 0.2
+ */
 
 function createTablePrenotazioni($data="",$visOreDisp="n"){
 	global $Gest_Prenotazioni;
@@ -13,6 +21,7 @@ function createTablePrenotazioni($data="",$visOreDisp="n"){
 		$StatoPrenotazioni[$numSpazi]=$Gest_Prenotazioni->getPreGioSpa($data_p,$spazio->ID);
 		$numSpazi++;
 	}
+	$data=pren_DateAdd(date("Y-m-d-H",current_time( 'timestamp', 0 ) ),"o",$Parametri["PrenEntro"]);
 //	print_r($StatoPrenotazioni[3]);
 	$numSpazi=count($spazi);
 	$MyID =get_current_user_id();
@@ -85,7 +94,7 @@ function createTablePrenotazioni($data="",$visOreDisp="n"){
                 <th style="background-color:#00FFCC">'.$i.'</th>';
   			for ($ns=1;$ns<=$numSpazi;$ns++){
 				if (current_user_can( 'manage_options' ) or $StatoPrenotazioni[$ns][$i]["IDUser"]==$MyID)
-					$Info='abbr="'.$StatoPrenotazioni[$ns][$i]["Note"].'"';
+					$Info='abbr="'.str_replace('"',"'",$StatoPrenotazioni[$ns][$i]["Note"]).'"';
 				else 
 					$Info="";
 		    	switch ($StatoPrenotazioni[$ns][$i]['Impegno']){
@@ -104,14 +113,21 @@ function createTablePrenotazioni($data="",$visOreDisp="n"){
 						break;				
 				}
 				//'.${'bg'.$ns}.'	
-				if($StatoPrenotazioni[$ns][$i]['OreCons']==1 and $StatoPrenotazioni[$ns][$i]['Impegno']==0)
+				//echo strtotime(date("Y-m-d", strtotime(date("Y-m-d"))) . " +1 day");
+				if($StatoPrenotazioni[$ns][$i]['OreCons']==1 and $StatoPrenotazioni[$ns][$i]['Impegno']==0){
+					$appo = explode ('/',$data_p);
+					$dataOC=mktime($i,0,0,$appo[1],$appo[0],$appo[2]);				
+					if ($dataOC<pren_cvdate($data))
+						$classe="style='background-color:".$Parametri['ColNonPrenotabile']."'";
+					else	
+						$classe="class='adminpreStyle'";
 					$HTML.= '
-					<td id="'.$i.'-0'.$IdSpazi[$ns].'" class="adminpreStyle">
+					<td id="'.$i.'-0'.$IdSpazi[$ns].'" '.$classe.'>
 					</td>';
+				}
 				elseif($StatoPrenotazioni[$ns][$i]['OreCons']==1 and $StatoPrenotazioni[$ns][$i]['Impegno']==2){
 					$HTML.= '
-					<td id="'.$i.'-0'.$IdSpazi[$ns].'" class="adminpre" '.$Info.'>
-						<div style="margin:1px;border: thin dotted blue;height:28px;'.${'bg'.$ns}.'">
+					<td id="'.$i.'-0'.$IdSpazi[$ns].'" class="adminpre" '.$Info.' style="'.${'bg'.$ns}.'">
 							<div style="display:inline;float:left;">
 								<img src="'.Prenotazioni_URL.'img/utente.png" alt="Icona utente"/>
 							</div>
@@ -121,10 +137,10 @@ function createTablePrenotazioni($data="",$visOreDisp="n"){
 							if (current_user_can( 'manage_options' ) or $StatoPrenotazioni[$ns][$i]["IDUser"]==$MyID)
 								$HTML.= '
 							<div style="display:inline;float:left">
-								<img src="'.Prenotazioni_URL.'img/info.png" alt="Icona info" title="Prenotazione effettuata il: '.$StatoPrenotazioni[$ns][$i]["DataPren"].' <br />da: '.$StatoPrenotazioni[$ns][$i]["Motivo"].' <br />Note: '.$StatoPrenotazioni[$ns][$i]["Note"].'" class="InfoPren"/>		
+								<img src="'.Prenotazioni_URL.'img/info.png" alt="Icona info" title="Prenotazione effettuata il: '.$StatoPrenotazioni[$ns][$i]["DataPren"].' <br />da: '.$StatoPrenotazioni[$ns][$i]["Motivo"].' <br />Note: '.str_replace('"',"'",$StatoPrenotazioni[$ns][$i]["Note"]).'" class="InfoPren"/>
+							</div>
 							<div style="display:inline;float:left;margin-top:3px;margin-left:5px;">
-								<img src="'.Prenotazioni_URL.'img/del.png" alt="Icona utente" class="DelPren" id="'.$StatoPrenotazioni[$ns][$i]["ID"].'"/>
-							</div>';
+								<img src="'.Prenotazioni_URL.'img/del.png" alt="Icona utente" class="DelPren" id="'.$StatoPrenotazioni[$ns][$i]["ID"].'"/>';
 					$HTML.='
 						</div>
 					</td>';
@@ -136,13 +152,14 @@ function createTablePrenotazioni($data="",$visOreDisp="n"){
 							<div style="display:inline;float:left;">
 									<img src="'.Prenotazioni_URL.'img/utente.png" alt="Icona utente" style="display:inline;"/>
 								</div>
-								<div style="display:inline;float:left;">	
+								<div style="display:inline;float:left;">
 									<span style="margin-left:3px;">'.$StatoPrenotazioni[$ns][$i]["Motivo"].'</span>
 								</div>';
 							if (current_user_can( 'manage_options' ) or $StatoPrenotazioni[$ns][$i]["IDUser"]==$MyID)
 								$HTML.= '
 								<div style="display:inline;float:left">
-									<img src="'.Prenotazioni_URL.'img/info.png" alt="Icona info" title="Prenotazione effettuata il: '.$StatoPrenotazioni[$ns][$i]["DataPren"].' <br />da: '.$StatoPrenotazioni[$ns][$i]["Motivo"].' <br />Note: '.$StatoPrenotazioni[$ns][$i]["Note"].'" class="InfoPren"/>
+									<img src="'.Prenotazioni_URL.'img/info.png" alt="Icona info" title="Prenotazione effettuata il: '.$StatoPrenotazioni[$ns][$i]["DataPren"].' <br />da: '.$StatoPrenotazioni[$ns][$i]["Motivo"].' <br />Note: '.str_replace('"',"'",$StatoPrenotazioni[$ns][$i]["Note"]).'" class="InfoPren"/>
+									
 								</div>
 								<div style="display:inline;float:left;margin-top:3px;">
 									<img src="'.Prenotazioni_URL.'img/del.png" alt="Icona utente" class="DelPren" id="'.$StatoPrenotazioni[$ns][$i]["ID"].'"/>
@@ -173,6 +190,7 @@ function createTablePrenotazioniSpazio($IDSpazio=0,$data=""){
 		$data_p=date("d/m/Y");
 	else
 		$data_p=$data;
+	$data=pren_DateAdd(date("Y-m-d-H",current_time( 'timestamp', 0 ) ),"o",$Parametri["PrenEntro"]);
 	$StatoPrenotazioni=$Gest_Prenotazioni->getPreGioSpa($data_p,$IDSpazio);
 	$HTML= '
 		<table class="settimanale" id="selectable" style="height:450px;" >
@@ -193,9 +211,16 @@ function createTablePrenotazioniSpazio($IDSpazio=0,$data=""){
      		<tr>
                 <th style="background-color:#00FFCC">'.$i.'</th>';
                 if ($StatoPrenotazioni[$i]['OreCons']>0){
+					$appo = explode ('/',$data_p);
+					$dataOC=mktime($i,0,0,$appo[1],$appo[0],$appo[2]);				
+					if ($dataOC<pren_cvdate($data))
+						$classe="style='background-color:".$Parametri['ColNonPrenotabile']."'";
+					else	
+						$classe="class='adminpreStyle'";
+
 					if($StatoPrenotazioni[$i]['Impegno']==0)
 						$HTML.= '
-						<td id="'.$i.'" class="adminpreStyle">
+						<td id="'.$i.'" '.$classe.'>
 						</td>';
 					elseif($StatoPrenotazioni[$i]['OreCons']==1){
 						$HTML.= '

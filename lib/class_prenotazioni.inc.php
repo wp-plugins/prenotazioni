@@ -1,4 +1,13 @@
 <?php
+/**
+ * Prenotazioni
+ * Classe Prenotazioni
+ * @package Prenotazioni
+ * @author Scimone Ignazio
+ * @copyright 2014-2099
+ * @version 0.2
+ */
+
 class Prenotazioni{
 	private $Riservato=array("Giorno" => 1,"Occupazione"=>array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
 							 "Giorno" => 2,"Occupazione"=>array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
@@ -14,11 +23,11 @@ class Prenotazioni{
 
 		$Parametri=get_Pre_Parametri();
 		echo '		
-		<input type="hidden" id="urlAnnullamento" value="'.Prenotazioni_URL.'lib/annullaPrenotazione.php">
 		<div style="margin-top: 40px;margin-right: 50px;float: right;width:120px;color: #000;padding:5px;">
 			<span style="background-color:'.$Parametri['ColPrenotato'].';">&nbsp;&nbsp;&nbsp;&nbsp;</span> Prenotato<br />
 	 		<span style="background-color:'.$Parametri['ColRiservato'].';">&nbsp;&nbsp;&nbsp;&nbsp;</span> Riservato<br />
 	 		<span style="background-color:'.$Parametri['ColNonDisponibile'].';">&nbsp;&nbsp;&nbsp;&nbsp;</span> Non disponibile<br />
+	 		<span style="background-color:'.$Parametri['ColNonPrenotabile'].';">&nbsp;&nbsp;&nbsp;&nbsp;</span> Prenotazione chiusa<br />
 	 	</div>
 		<div class="wrap" style="width:99%" >
 	  	<img src="'.Prenotazioni_URL.'img/spazi.png" alt="Icona configurazione" style="display:inline;float:left;margin-top:10px;"/>
@@ -137,7 +146,6 @@ class Prenotazioni{
 		global $wpdb;
     	$dataS=explode("/",$data);
     	$dataA=$dataS[2]."-".$dataS[1]."-".$dataS[0];
-	 	$wpdb->query($wpdb->prepare( "INSERT FROM $wpdb->table_prenotazioni WHERE IdPrenotazione=%d",$IdPrenotazione));
 	 	if ( false === $wpdb->insert($wpdb->table_prenotazioni,array('IPAddress' => $_SERVER['REMOTE_ADDR'],
 	                                                                 'IdUtente' => get_current_user_id(),
 	                                                              	 'IdSpazio' => $IdSpazio,

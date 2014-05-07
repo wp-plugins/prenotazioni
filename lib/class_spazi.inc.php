@@ -1,4 +1,12 @@
 <?php
+/**
+ * Prenotazioni
+ * Classe gestione Spazi
+ * @package Prenotazioni
+ * @author Scimone Ignazio
+ * @copyright 2014-2099
+ * @version 0.2
+ */
 
 class Spazi{
 	private $Descrizione;

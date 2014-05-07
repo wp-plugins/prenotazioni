@@ -5,10 +5,28 @@
  * @package Prenotazioni
  * @author Scimone Ignazio
  * @copyright 2014-2099
- * @since 3.9
+ * @version 0.2
  */
  
 if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) { die('You are not allowed to call this page directly.'); }
+
+function pren_cvdate($data){
+	$rsl = explode ('-',$data);
+	return mktime($rsl[3],0,0,$rsl[1], $rsl[2],$rsl[0]);
+}
+
+function pren_DateAdd($data,$cosa="g",$quanto=1){
+	//data in formato Anno-Mese-Giorno-ora
+	$tempo=pren_cvdate($data);
+	switch($cosa){
+		case "o": $incremento=$quanto*3600;
+			break;
+		case "g": $incremento=$quanto*86400;
+			break;
+	}
+	$secondi=$tempo+$incremento;
+	return date("Y-m-d-H",$secondi);
+}
 
 function get_Pre_Parametri(){
 	$Parametri=get_option('opt_PrenotazioniParametri');

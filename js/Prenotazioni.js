@@ -26,6 +26,8 @@ jQuery.noConflict();
   	$('#ColNonDisponibile').wpColorPicker();
    	$('#coloreRiservato').wpColorPicker();
 	$('#colorePrenotato').wpColorPicker();
+	$('#colorenonprenotabile').wpColorPicker();
+	
 /*	{
 		    var day1 = $("#preSelDay").datepicker('getDate').getDate();                 
             var month1 = $("#preSelDay").datepicker('getDate').getMonth() + 1;             
@@ -77,8 +79,10 @@ jQuery.noConflict();
 		}
 	});
 	$(document).click(function(e) { //start function when Random button is clicked
+
 		if(e.target.className=="adminpreStyle"){
-			var ID=e.target.id;
+			PrenPrima=parseInt($("#MinOrePrima").attr("value"));
+  			var ID=e.target.id;
 			eleID=ID.split("-");
 			OraI= parseInt(eleID[0], 10);
 			Spazio=parseInt(eleID[1], 10);
@@ -100,6 +104,9 @@ jQuery.noConflict();
 			$("#dataPre").text($("#dataCal").text());
 			$("#InizioPre").text(OraI);
 			$("#SpazioPre").text(desSpazio);
+			var NOP=$("#NumOrePren"),
+			    Note=$("#notePrenotazione"),
+			    allFields = $( [] ).add( NOP ).add( Note );
 			$("#dialog-form").dialog({
 				resizable: false,
 				height:400,
@@ -110,9 +117,9 @@ jQuery.noConflict();
 					  		$.ajax({type: "post",url: "admin-ajax.php",data: { action: 'newPren', 
 					  															 data: dataPren, 
 					  															 OraI: OraI, 
-					  															  Ore: $("#NumOrePren").val(), 
+					  															  Ore: NOP.val(), 
 					  														      IdS: Spazio,
-					  														     Note:$("#notePrenotazione").val()},
+					  														     Note: Note.val()},
 								beforeSend: function() {$("#loading").fadeIn('fast');}, 
 								success: function(html){
 										$.ajax({type: "post",url: "admin-ajax.php",data: { action: 'prenSpazi', data: dataPren},
@@ -125,7 +132,9 @@ jQuery.noConflict();
 			        		$( this ).dialog( "close" );},
 			             Cancel: function() {$( this ).dialog( "close" );}
 			      		 },
-			   close: function() {$( this ).dialog( "close" );}
+			   close: function() {
+			   		allFields.val( "" );
+			   		$( this ).dialog( "close" );}
 			});
 		}	
 
@@ -181,37 +190,6 @@ jQuery.noConflict();
 			});
 		}
 	});
-/*	 $( "#dialog-confirm" ).dialog( {
-				resizable: false,
-				height:140,
-				modal: true,
-				buttons: {
-					"Cancella prenotazione": function() {$( this ).dialog( "close" );},
-					Cancel: function() {$( this ).dialog( "close" );}
-				},
-	});
-		var id='#v'+$(this).attr('id');
-			var answer = confirm("Confermi l'annullamento della prenotazione `" + $(this).attr('abbr') + '` ?\nATTENZIONE L\'OPERAZIONE E\' IRREVERSIBILE!!!!!')
-			if (answer){
-				///location.href=$(this).attr('href')+"&motivo="+Testoannullamento;
-				var idValore=$(id+"value").attr('value');
-				var location=$('#urlAnnullamento').attr('value')+"?idPren="+idValore;
-				$.ajax({type: "post",location: "admin-ajax.php",data: { action: 'delPren', data: idValore},
-					beforeSend: function() {$("#loading").fadeIn('fast');}, 
-					success: function(html){
-								$.ajax({type: "post",url: "admin-ajax.php",data: { action: 'prenSpazi', data: $("#dataCal").text()},
-								     success: function(html){$("#loading").fadeOut('fast');
-											                 $("#tabPrenotazioniSpazi").html(html);
-							  	   			  }
-								}); 
-					}
-				}); 
-				return false;
-			}
-			else{
-				return false;
-			}				
-	});*/
 	$( "#dispo-range" ).slider({
 		range: true,
 		min: 1,

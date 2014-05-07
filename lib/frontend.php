@@ -1,7 +1,7 @@
 <?php
 /**
  * Prenotazioni
- * Libreria funzioni generali
+ * Codice di gestione della componente Pubblica
  * @package Prenotazioni
  * @author Scimone Ignazio
  * @copyright 2014-2099
@@ -21,8 +21,8 @@ if (isset($_POST['navigazioneGiorni']) and $_POST['navigazioneGiorni']=="Prenota
 }
 	$Parametri=get_Pre_Parametri();
 	$Stat="
+ 	<strong>Ultime 5 prenotazione passate</strong>
 	<table class=\"TabellaFE\">
- 		<caption>Ultime 5 prenotazione passate</caption>
  		<thead>
 	    	<tr>
 	        	<th>Spazio</th>
@@ -45,8 +45,8 @@ if (isset($_POST['navigazioneGiorni']) and $_POST['navigazioneGiorni']=="Prenota
 	$Stat.= "
 			</tbody>
 		</table>
+	<strong>Prenotazioni di oggi</strong>
 	<table class=\"TabellaFE\">
- 		<caption>Prenotazioni di oggi</caption>
  		<thead>
 	    	<tr>
 	        	<th>Spazio</th>
@@ -68,12 +68,10 @@ if (isset($_POST['navigazioneGiorni']) and $_POST['navigazioneGiorni']=="Prenota
 	}
 	$Stat.= "
 			</tbody>
-		</table>";
-	$Stat.= "
-			</tbody>
 		</table>
+	<strong>Prossime 5 Prenotazioni</strong>
 	<table class=\"TabellaFE\">
- 		<caption>Prossime 5 Prenotazioni</caption>
+ 		
  		<thead>
 	    	<tr>
 	        	<th>Spazio</th>
@@ -142,6 +140,7 @@ if (isset($_POST['navigazioneGiorni']) and $_POST['navigazioneGiorni']=="Prenota
 							<input type="hidden" id="OranIzio" value="'.$Parametri['OraInizio'].'" />
 							<input type="hidden" id="OraFine" value="'.$Parametri['OraFine'].'" />
 							<input type="hidden" id="NumMaxOre" value="'.$Parametri['MaxOrePrenotabili'].'" />
+							<input type="hidden" id="MinOrePrima" value="'.$Parametri['PrenEntro'].'" />
 							<input type="submit" class="navigazioneGiorni" value="Prenota" name="navigazioneGiorni" />
 						</td>
 					</tr>

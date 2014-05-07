@@ -3,7 +3,7 @@
 Plugin Name:Prenotazioni
 Plugin URI: http://plugin.sisviluppo.info
 Description: Plugin utilizzato per delle risorse Aule, Sale conferenza, Laboratori, etc...
-Version:0.1
+Version:0.2
 Author: Scimone Ignazio
 Author URI: http://plugin.sisviluppo.info
 License: GPL2
@@ -149,10 +149,12 @@ if (!class_exists('Plugin_Prenotazioni')) {
       $Parametri=array("OraInizio" =>7,
       				   "OraFine" => 20,
       				   "Giorni" => array(1,1,1,1,1,0,0),
+      				   "ColNonPrenotabile" =>"#EBEBEB",
        				   "ColNonDisponibile" =>"#b6b5b5",
      				   "ColRiservato" =>"#FF0000",
       				   "ColPrenotato" =>"#0000FF",
-      				   "MaxOrePrenotabili" => 6);
+      				   "MaxOrePrenotabili" => 6,
+      				   "PrenEntro" => 12);
 	  $P  =  get_option('opt_PrenotazioniParametri');
 	  if($P!==false)
 	  	$Parametri=unserialize($P);
@@ -167,7 +169,7 @@ if (!class_exists('Plugin_Prenotazioni')) {
 	  <form name="Prenotazioni_Parametri" action="'.get_bloginfo('wpurl').'/wp-admin/index.php" method="post">
 	  <table class="form-table">
 		<tr valign="top">
-			<th scope="row"><label for="nomeente">Fascia oraria disponibilità risorse</label></th>
+			<th scope="row">Fascia oraria disponibilità risorse</th>
 			<td>
 				<input type="hidden" id="OI" name="OraInizio" value="'.$Parametri['OraInizio'].'">
 				<input type="hidden" id="OF" name="OraFine" value="'.$Parametri['OraFine'].'">
@@ -175,7 +177,7 @@ if (!class_exists('Plugin_Prenotazioni')) {
 			<div id="dispo-range" style="width:200px;"></div></td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><label for="LivelloTitoloEnte">Giorni disponibili per la prenotazione</label></th>
+			<th scope="row">Giorni disponibili per la prenotazione</th>
 			<td>
 				<input type="checkbox" name="GD_l" value="1" '.$GD_0_SEL.' id="GD_1"/>Lun
 				<input type="checkbox" name="GD_m" value="1" '.$GD_1_SEL.' id="GD_2"/>Mar
@@ -187,31 +189,43 @@ if (!class_exists('Plugin_Prenotazioni')) {
 			</td>
 		</tr>	
 		<tr valign="top">
-			<th scope="row"><label for="color">Colore Spazio non disponibile</label></th>
+			<th scope="row">Colore Spazio non disponibile</th>
 			<td> 
 				<input type="text" id="ColNonDisponibile" name="ColNonDisponibile" size="5" value="'.$Parametri["ColNonDisponibile"].'"/>
 			</td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><label for="color">Colore Ore Riservate</label></th>
+			<th scope="row">Colore Ore Riservate</th>
 			<td> 
 				<input type="text" id="coloreRiservato" name="coloreRiservato" size="5" value="'.$Parametri["ColRiservato"].'"/>
 			</td>
 		</tr>
 		<tr valign="top">
-			<th scope="row"><label for="color">Colore Ore Prenotate</label></th>
+			<th scope="row">Colore Ore Prenotate</th>
 			<td> 
 				<input type="text" id="colorePrenotato" name="colorePrenotato" size="5" value="'.$Parametri["ColPrenotato"].'"/>
 			</td>
 		</tr>		
 		<tr valign="top">
-			<th scope="row"><label for="color">Numero Massimo di ore prenotabili</label></th>
+			<th scope="row">Colore Ore non Prenotabili</th>
+			<td> 
+				<input type="text" id="colorenonprenotabile" name="colorenonprenotabile" size="5" value="'.$Parametri["ColNonPrenotabile"].'"/>
+			</td>
+		</tr>		
+		<tr valign="top">
+			<th scope="row">Numero Massimo di ore prenotabili</th>
 			<td> 
 				<input type="text" id="max-ore-valore" name="maxOre" style="width:60px;background-color: inherit;border: none;" value="'.$Parametri["MaxOrePrenotabili"].'" />
 				<div id="max-ore-range" style="width: 100px;"></div>
 			</td>
 		</tr>	
-		</table>
+		<tr valign="top">
+			<th scope="row"><label for="entro">Numero ore entro cui bisogna fare le prenotazioni</label></th>
+			<td> 
+				<input type="text" id="entro" name="entro" style="width:60px;background-color: inherit;border: none;" value="'.$Parametri["PrenEntro"].'" />
+				<div id="max-ore-range" style="width: 100px;"></div>
+			</td>
+		</tr>			</table>
 	    <p class="submit">
 	    	<input type="hidden" id="origine" name="origine" value="Salva_Opzioni_Prenotazioni">
 	        <input type="submit" name="Prenotazioni_submit_button" value="Salva Modifiche" />
@@ -237,17 +251,21 @@ if (!class_exists('Plugin_Prenotazioni')) {
       $Parametri=array("OraInizio" =>7,
       				   "OraFine" => 20,
       				   "Giorni" => array(0,0,0,0,0,0,0),
+      				   "ColNonPrenotabile" =>"#EBEBEB",
       				   "ColNonDisponibile" =>"#b6b5b5",
       				   "ColRiservato" =>"#FF0000",
       				   "ColPrenotato" =>"#0000FF",
-      				   "MaxOrePrenotabili" => 6);
+      				   "MaxOrePrenotabili" => 6,
+      				   "PrenEntro" => 12);
 	    if($_POST['origine'] == 'Salva_Opzioni_Prenotazioni'){
 		    $Parametri['OraInizio']=$_POST['OraInizio'];
 		    $Parametri['OraFine']=$_POST['OraFine'];
+		    $Parametri['ColNonPrenotabile']=$_POST['colorenonprenotabile'];
 		    $Parametri['ColNonDisponibile']=$_POST['ColNonDisponibile'];
 		    $Parametri['ColRiservato']=$_POST['coloreRiservato'];
 		    $Parametri['ColPrenotato']=$_POST['colorePrenotato'];
 		    $Parametri['MaxOrePrenotabili']=$_POST['maxOre'];
+		    $Parametri['PrenEntro']=$_POST['entro'];
 			if (isset($_POST['GD_l']))
 				$Parametri['Giorni'][0]=1;
 			if (isset($_POST['GD_m']))
