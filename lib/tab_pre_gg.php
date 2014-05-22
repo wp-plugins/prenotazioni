@@ -5,7 +5,7 @@
  * @package Prenotazioni
  * @author Scimone Ignazio
  * @copyright 2014-2099
- * @version 0.2
+ * @version 1.0
  */
 
 function createTablePrenotazioni($data="",$visOreDisp="n"){
@@ -114,13 +114,16 @@ function createTablePrenotazioni($data="",$visOreDisp="n"){
 				}
 				//'.${'bg'.$ns}.'	
 				//echo strtotime(date("Y-m-d", strtotime(date("Y-m-d"))) . " +1 day");
-				if($StatoPrenotazioni[$ns][$i]['OreCons']==1 and $StatoPrenotazioni[$ns][$i]['Impegno']==0){
+				if($StatoPrenotazioni[$ns][$i]['OreCons']==1 and $StatoPrenotazioni[$ns][$i]['Impegno']!=2){
 					$appo = explode ('/',$data_p);
 					$dataOC=mktime($i,0,0,$appo[1],$appo[0],$appo[2]);				
 					if ($dataOC<pren_cvdate($data))
 						$classe="style='background-color:".$Parametri['ColNonPrenotabile']."'";
 					else	
-						$classe="class='adminpreStyle'";
+						if ($StatoPrenotazioni[$ns][$i]['Impegno']==0) 
+							$classe="class='adminpreStyle' style='".${'bg'.$ns}."'";
+						else
+							$classe="style='".${'bg'.$ns}."'";						
 					$HTML.= '
 					<td id="'.$i.'-0'.$IdSpazi[$ns].'" '.$classe.'>
 					</td>';
@@ -193,8 +196,8 @@ function createTablePrenotazioniSpazio($IDSpazio=0,$data=""){
 	$data=pren_DateAdd(date("Y-m-d-H",current_time( 'timestamp', 0 ) ),"o",$Parametri["PrenEntro"]);
 	$StatoPrenotazioni=$Gest_Prenotazioni->getPreGioSpa($data_p,$IDSpazio);
 	$HTML= '
-		<table class="settimanale" id="selectable" style="height:450px;" >
- 		    <input type="hidden" id="OldSel" value="" />
+ 		<input type="hidden" id="OldSel" value="" />
+		<table class="settimanale" id="selectable" style="height:600px;" >
  		    <thead>
 	          	<tr>
 	                <th style="background-color:#00FFCC;width:5%">Ora</th>';
@@ -205,9 +208,22 @@ function createTablePrenotazioniSpazio($IDSpazio=0,$data=""){
  	    </thead>
 	    <tbody>';
 	    for($i=$Parametri['OraInizio'];$i<=$Parametri['OraFine'];$i++){
-	    	if($i<$Parametri['OraInizio'] or $i>$Parametri['OraFine'])
-	    		continue;		
-   			$HTML.= '          
+/*	    	if($i<$Parametri['OraInizio'] or $i>$Parametri['OraFine'])
+	    		continue;		*/
+			switch ($StatoPrenotazioni[$i]['Impegno']){
+				case 2:
+					$colore=$Parametri['ColPrenotato'];
+					break;
+				case 1:
+					$colore=$Parametri['ColRiservato'];
+					break;
+				case 3:
+					$colore=$Parametri['ColNonDisponibile'];
+					break;
+				case 0:
+					$colore="#FFFFFF";
+			} 
+			$HTML.= '          
      		<tr>
                 <th style="background-color:#00FFCC">'.$i.'</th>';
                 if ($StatoPrenotazioni[$i]['OreCons']>0){
@@ -217,18 +233,17 @@ function createTablePrenotazioniSpazio($IDSpazio=0,$data=""){
 						$classe="style='background-color:".$Parametri['ColNonPrenotabile']."'";
 					else	
 						$classe="class='adminpreStyle'";
-
 					if($StatoPrenotazioni[$i]['Impegno']==0)
 						$HTML.= '
-						<td id="'.$i.'" '.$classe.'>
+						<td id="'.$i.'" '.$classe.' style="background-color:'.$colore.'">
 						</td>';
 					elseif($StatoPrenotazioni[$i]['OreCons']==1){
 						$HTML.= '
-						<td id="'.$i.'" class="adminpre" style="background-color:'.$Parametri['ColNonDisponibile'].'">
+						<td id="'.$i.'" class="adminpre" style="background-color:'.$colore.'">
 						</td>';
 					}else{
 							$HTML.= '
-							<td id="'.$i.'" class="adminpre" rowspan="'.$StatoPrenotazioni[$i]['OreCons'].'" style="background-color:'.$Parametri['ColNonDisponibile'].'">
+							<td id="'.$i.'" class="adminpre" rowspan="'.$StatoPrenotazioni[$i]['OreCons'].'" style="background-color:'.$colore.'">
 								
 							</td>';	
 					}

@@ -3,7 +3,7 @@
 Plugin Name:Prenotazioni
 Plugin URI: http://plugin.sisviluppo.info
 Description: Plugin utilizzato per delle risorse Aule, Sale conferenza, Laboratori, etc...
-Version:0.2
+Version:1.0
 Author: Scimone Ignazio
 Author URI: http://plugin.sisviluppo.info
 License: GPL2
@@ -57,7 +57,7 @@ if (!class_exists('Plugin_Prenotazioni')) {
 		add_action( 'admin_menu', array (&$this, 'add_menu') ); 
 		add_action( 'wp_ajax_prenSpazi', array(&$this,'getPrenotazioniSpazi'));
 		add_action( 'wp_ajax_FEprenSpazi', array(&$this,'getPrenotazioniSpazi'));
-		add_action( 'wp_ajax_nopriv_FEprenSpazi', array(&$this,'getPrenotazioniSpazi'));
+		//add_action( 'wp_ajax_nopriv_FEprenSpazi', array(&$this,'getPrenotazioniSpazi'));
 		add_action( 'wp_ajax_delPren', array(&$this,'deletePrenotazioniSpazi'));
 		add_action( 'wp_ajax_newPren', array(&$this,'nuovaPrenotazioneSpazi'));
 		add_shortcode('Prenotazioni', array(&$this, 'FrontEndPrenotazioni'));

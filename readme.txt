@@ -3,7 +3,7 @@ Contributors: Scimone Ignazio
 Tags: Prenotazione spazi, Prenotazioni Aule,booking meeting rooms
 Requires at least: 3.8
 Tested up to: 3.9
-Stable tag: 0.2
+Stable tag: 1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -36,6 +36,8 @@ Di seguito sono riportati i passi necessari per l'installazione del plugin. la p
 9. FrontEnd finestra <strong>Statistiche</strong> (solo per utenti registrati)
 10. FrontEnd finestra <strong>Catalogo Spazi</strong>
 == Changelog ==
+= 1.0 =
+- <strong>Corretti</strong> vari bugs
 = 0.2 =
 - <strong>Corretti</strong> vari bugs: Motivazione prenotazione e numero ore prenotazione, alla seconda registrazione consecutiva non venivano riportate correttamente
 - <strong>Inserito</strong> nuovo parametro <em>Numero ore entro cui bisogna fare le prenotazioni</em> disabilita le prenotazioni fino a N. ore dal momento della registrazione

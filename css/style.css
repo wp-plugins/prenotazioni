@@ -3,21 +3,16 @@ table.settimanale {
 	border-style: thin;
 	border-color: blue;
 	border-collapse: collapse;
-	background-color: white;
 }
 table.settimanale th {
 	border-width: 1px;
-	padding: 1px;
 	border-style: inset;
 	border-color: gray;
-	background-color: white;
 }
 table.settimanale td {
 	border-width: 1px;
-	padding: 1px;
 	border-style: inset;
 	border-color: gray;
-	background-color: white;
 }
 .navigazioneGiorni {
 	-moz-box-shadow: 0px 14px 14px -7px #91b8b3;
@@ -41,7 +36,6 @@ table.settimanale td {
 	font-family:arial;
 	font-size:12px;
 	font-weight:bold;
-	
 	text-decoration:none;
 	text-shadow:0px 1px 0px #2b665e;
 }
@@ -60,7 +54,10 @@ table.settimanale td {
 	top:1px;
 }
 .adminpreStyle .adminpre{
-	height: 10px;
+	height: 5px;
+}
+.adminpreStyle{
+	background-color: White;
 }
 #selectable .ui-selecting { background: #FECA40; }
 #selectable .ui-selected { background: #F39814; color: white; }
@@ -70,41 +67,39 @@ table.settimanale td {
 	padding: 3px;
 }
 #CartellePrenotazioni{
-	height: 550px;
+	height: 580px;
 }
 #CartellePrenotazioni #CartellaP2{
-	height: 490px;
+	height: 520px;
 	overflow-y:scroll;
 	overflow-x:hidden;
 }
 #CartellePrenotazioni #CartellaP3{
-	height: 490px;
+	height: 520px;
 	overflow-y:scroll;
 	overflow-x:hidden;
 }
 #CampiPrenotazioniSpazi{
-	height: 490px;
+	height: 500px;
 }
 #InizioPre{
-	height: 270px;
+	height: 320px;
 	width: 230px;
-	overflow-y:scroll;
-	overflow-x:hidden;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	border: thin solid Blue;
 }	
 }
-#TabellaDatiPrenotazioni{
-	border: thin dotted blue;
-}
+
 #TabellaDatiPrenotazioni td{
 	font-size: 12px;
-	font-weight:bold;
-	text-align:right;
+	font-weight: bold;
+	text-align: right;
 	margin: 1px 1px 1px 1px;
 	padding: 1px 1px 1px 1px;
 	vertical-align: top;
 }
 #loading { 
-	clear:both; 
 	background:url(images/loading.gif) center top no-repeat; 
 	text-align:center;
 	padding:33px 0px 0px 0px; 

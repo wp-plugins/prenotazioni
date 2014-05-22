@@ -5,7 +5,7 @@
  * @package Prenotazioni
  * @author Scimone Ignazio
  * @copyright 2014-2099
- * @version 0.2
+ * @version 1.0
  */
 
 if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) { die('You are not allowed to call this page directly.'); }
@@ -45,20 +45,29 @@ public function widget( $args, $instance )
 			$titolo="Prenotazioni";
 		echo $before_widget;
         echo $before_title .$titolo. $after_title;
-		echo "<div>
-		<p>Ultime 5 prenotazione passate</p>";
+		echo "<div>";
 		$Elenco=$Gest_Prenotazioni->get_Prenotazioni("<");
-		foreach ($Elenco as $Elemento) {
-			$Spazio=$G_Spaces->get_NomeSpazio($Elemento->IdSpazio);
-			$data=$Elemento->DataPrenotazione;
-			$oraI=$Elemento->OraInizio;
-			$oraF=$Elemento->OraFine;
+		if(count($Elenco)>0){
+			if (count($Elenco)<5)
+				echo "
+		<p>Ultime 5 prenotazione passate</p>";
+			else	
+				echo "
+		<p>Ultime ".count($Elenco)." prenotazione passate</p>";
+			foreach ($Elenco as $Elemento) {
+				$Spazio=$G_Spaces->get_NomeSpazio($Elemento->IdSpazio);
+				$data=$Elemento->DataPrenotazione;
+				$oraI=$Elemento->OraInizio;
+				$oraF=$Elemento->OraFine;
+				echo "
+			<ul>
+				<li>$Spazio $data $oraI $oraF </li>";
+			}
+			echo "</ul>";
+		}else
 			echo "
-		<ul>
-			<li>$Spazio $data $oraI $oraF </li>";
-		}
-		echo "</ul>
-		</div>";
+		<p>Al momento non risultano prenotazioni</p>";		
+		echo "</div>";
  	   echo $after_widget;
     }
 

@@ -5,7 +5,7 @@
  * @package Prenotazioni
  * @author Scimone Ignazio
  * @copyright 2014-2099
- * @version 0.2
+ * @version 1.0
  */
 
 class Spazi{

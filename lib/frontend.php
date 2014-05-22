@@ -5,8 +5,8 @@
  * @package Prenotazioni
  * @author Scimone Ignazio
  * @copyright 2014-2099
- * @since 3.8
- */
+ * @version 1.0
+ **/
 
 if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) { die('You are not allowed to call this page directly.'); }
   global $Gest_Prenotazioni,$G_Spaces;
@@ -67,11 +67,10 @@ if (isset($_POST['navigazioneGiorni']) and $_POST['navigazioneGiorni']=="Prenota
 	        </tr>';
 	}
 	$Stat.= "
-			</tbody>
-		</table>
+		</tbody>
+	</table>
 	<strong>Prossime 5 Prenotazioni</strong>
-	<table class=\"TabellaFE\">
- 		
+	<table class=\"TabellaFE\">	
  		<thead>
 	    	<tr>
 	        	<th>Spazio</th>
@@ -92,59 +91,58 @@ if (isset($_POST['navigazioneGiorni']) and $_POST['navigazioneGiorni']=="Prenota
 	        </tr>';
 	}
 	$Stat.= "
-			</tbody>
-		</table>";
+		</tbody>
+	</table>";
+	$Spazio=$G_Spaces->get_ListaSpazi("SpazioP","SpazioP","");
 	$FinPren='	    
 	<div id="AreaDatiPrenotazioniSpazi">
     	<form name="Memo_Prenotazioni"  action="'.$_SERVER["REQUEST_URI"].'" method="post">
             <fieldset id="CampiPrenotazioniSpazi">
-            	<legend>Dati della prenotazione:</legend>
-				<table id="TabellaDatiPrenotazioni">
-					<tr>
-						<td colspan="2" style="width:100px;"><label>Spazio:</label> '.$G_Spaces->get_ListaSpazi("SpazioP","SpazioP","").'</td>
-						<td rowspan="3"><img src="'.$G_Spaces->get_Foto().'" id="imgSpazio"/></td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							Data prenotazione: <input type="text" id="DataPrenotazione" name="DataPrenotazione" style="width: 100px;" value="'.get_pre_Oggi().'">
-						<td>
-					</tr>					
-					<tr>
-						<td colspan="2" style="height:60px">
-							<div id="loading">LOADING!</div>
-						<td>
-					</tr>					
-					<tr>
-						<td rowspan="3" style="text-align:center;">
-							<label>Ora Inizio:</label>
-							<div id="InizioPre">
-								'.createTablePrenotazioniSpazio($G_Spaces->get_FirstID()).'
-								<input type="hidden" id="OraInizioPrenotazione" value="'.$Parametri['OraInizio'].'" name="OraInizioPrenotazione"/>
-							</div>
-						</td>
-						<td style="text-align: left">
-							<label>N&deg; ore:</label> <select id="NumOrePren" name="NumOrePren">
-								<option value="0">----</option>		
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td style="text-align:center;" colspan="2">
-							<label>Motivo Prenotazione:</label><br />
-							<textarea rows="10"  id="notePrenotazione" style="width:100%;" name="notePrenotazione"></textarea>
-						</td>
-					</tr>
-					<tr>
-						<td style="text-align:center;" colspan="2"> 
-							<input type="hidden" id="ColPrenotato" value="'.$Parametri['ColPrenotato'].'" />
-							<input type="hidden" id="OranIzio" value="'.$Parametri['OraInizio'].'" />
-							<input type="hidden" id="OraFine" value="'.$Parametri['OraFine'].'" />
-							<input type="hidden" id="NumMaxOre" value="'.$Parametri['MaxOrePrenotabili'].'" />
-							<input type="hidden" id="MinOrePrima" value="'.$Parametri['PrenEntro'].'" />
-							<input type="submit" class="navigazioneGiorni" value="Prenota" name="navigazioneGiorni" />
-						</td>
-					</tr>
-				</table>
+            	<div style="float:left;margin-left:5px;margin-top:10px;">
+            		<img src="'.$G_Spaces->get_Foto().'" id="imgSpazio" style="border:none;"/>
+            	</div>
+            	<p style="text-align:center;font-weight: bold;font-size: large;">Dati della prenotazione:</p>
+            	<div style="float:left;margin-left:5px;">
+					<div style="float:left;">
+						<p>
+							<label>Spazio:</label> '.$Spazio.'
+						</p>	
+						<p>
+							<label>Data prenotazione:</label>
+							<input type="text" id="DataPrenotazione" name="DataPrenotazione" style="width: 100px;" value="'.get_pre_Oggi().'">
+						</p>
+					</div>
+					<div id="loading" style="float:left;margin-left:15px;margin-top:15px;">LOADING!</div>
+				</div>
+				<div style="clear:both;"></div>
+				<div style="float:left;">
+					<label>Ora Inizio:</label>
+					<div id="InizioPre">
+						'.createTablePrenotazioniSpazio($G_Spaces->get_FirstID()).'
+					</div>
+				</div>
+				<div style="float:left;margin-left:20px;">
+					<p>
+						<label>N&deg; ore:</label> 
+						<select id="NumOrePren" name="NumOrePren">
+							<option value="0">----</option>		
+						</select>
+					</p>
+					<p>
+						<label>Motivo Prenotazione:</label><br />
+						<textarea rows="8"  cols="32" id="notePrenotazione" style="width:100%;" name="notePrenotazione"></textarea>
+					</p>
+					<p>					
+						<input type="hidden" id="OraInizioPrenotazione" value="" name="OraInizioPrenotazione"/>
+						<input type="hidden" id="UrlAjax" value="'.home_url().'/wp-admin/admin-ajax.php" name="UrlAjax"/>
+						<input type="hidden" id="ColPrenotato" value="'.$Parametri['ColPrenotato'].'" />
+						<input type="hidden" id="OranIzio" value="'.$Parametri['OraInizio'].'" />
+						<input type="hidden" id="OraFine" value="'.$Parametri['OraFine'].'" />
+						<input type="hidden" id="NumMaxOre" value="'.$Parametri['MaxOrePrenotabili'].'" />
+						<input type="hidden" id="MinOrePrima" value="'.$Parametri['PrenEntro'].'" />
+						<input type="submit" class="navigazioneGiorni" value="Prenota" name="navigazioneGiorni" />
+					</p>
+				</div>				
             </fieldset>
         </form>
 	</div>
@@ -165,8 +163,7 @@ if (isset($_POST['navigazioneGiorni']) and $_POST['navigazioneGiorni']=="Prenota
 			<div id=\"CartellaP3\">
 	              ".$G_Spaces->get_ListaSpaziDiv()."
 			</div>			
-		</div>
-	<div>";
+		</div>";
 
 
 

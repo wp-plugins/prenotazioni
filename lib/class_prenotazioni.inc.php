@@ -5,7 +5,7 @@
  * @package Prenotazioni
  * @author Scimone Ignazio
  * @copyright 2014-2099
- * @version 0.2
+ * @version 1.0
  */
 
 class Prenotazioni{
@@ -32,12 +32,14 @@ class Prenotazioni{
 		<div class="wrap" style="width:99%" >
 	  	<img src="'.Prenotazioni_URL.'img/spazi.png" alt="Icona configurazione" style="display:inline;float:left;margin-top:10px;"/>
 	  	<h2 style="margin-left:40px;">Gestione Prenotazioni</h2>
-		<div>
+		</div>		<div>
 	 		<table>
 	 			<tr>
 	 				<td><input type="button" class="navigazioneGiorni" value="<<" /></td>
 	 				<td style="width:70px;text-align: center;"><span id="giornodataCal">'.giornoSettimana(date("d/m/Y"),"l").' </span></td>
-	 				<td style="width:70px;text-align: center;"><span id="dataCal">'.date("d/m/Y").'</span></td>
+	 				<td style="width:70px;text-align: center;"><span id="dataCal">'.date("d/m/Y").'</span>
+	 					<input type="hidden" id="dataCalVal" value="" />
+	 				</td>
 	 				<td><input type="button" class="navigazioneGiorni" value=">>" /></td>
 	 				<td><input id="preSelDay" type="image" class="calendarioGiorni" src="'.Prenotazioni_URL.'img/icocalendario.png" /></td>
 	 				<td><input id="helpPren" type="image" class="HelpPrenotazioni" src="'.Prenotazioni_URL.'img/help.png" /></td>
@@ -46,7 +48,7 @@ class Prenotazioni{
 	 			</tr>
 	 		</table>
 		</div>
-		
+
 		 ';
 		 echo createTablePrenotazioni();
 	}
