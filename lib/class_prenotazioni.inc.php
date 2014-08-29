@@ -5,7 +5,7 @@
  * @package Prenotazioni
  * @author Scimone Ignazio
  * @copyright 2014-2099
- * @version 1.0
+ * @version 1.1
  */
 
 class Prenotazioni{

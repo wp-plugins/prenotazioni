@@ -5,7 +5,7 @@
  * @package Prenotazioni
  * @author Scimone Ignazio
  * @copyright 2014-2099
- * @version 1.0
+ * @version 1.1
  */
 
 function createTablePrenotazioni($data="",$visOreDisp="n"){
@@ -15,7 +15,7 @@ function createTablePrenotazioni($data="",$visOreDisp="n"){
 		$data_p=date("d/m/Y");
 	else
 		$data_p=$data;
-	$spazi = get_posts(array('post_type'=> 'spazi'));
+	$spazi = get_posts(array('post_type'=> 'spazi','posts_per_page'   => -1));
 	$numSpazi=1;
 	foreach ( $spazi as $spazio ){
 		$StatoPrenotazioni[$numSpazi]=$Gest_Prenotazioni->getPreGioSpa($data_p,$spazio->ID);
@@ -70,6 +70,7 @@ function createTablePrenotazioni($data="",$visOreDisp="n"){
 	                <th style="background-color:#00FFCC;width:5%">Ora</th>';
 	          	$i=0;
 	          	$dimeColonna=95 / $numSpazi;
+	          	//echo $numSpazi;exit;
 	          	$IdSpazi=array();
 	          	foreach ( $spazi as $spazio ){
 	          		$IdSpazi[$i+1]=$spazio->ID;
