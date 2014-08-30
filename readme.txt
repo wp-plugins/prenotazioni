@@ -3,7 +3,7 @@ Contributors: Scimone Ignazio
 Tags: Prenotazione spazi, Prenotazioni Aule,booking meeting rooms
 Requires at least: 3.8
 Tested up to: 3.9
-Stable tag: 1.1
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -36,6 +36,8 @@ Di seguito sono riportati i passi necessari per l'installazione del plugin. la p
 9. FrontEnd finestra <strong>Statistiche</strong> (solo per utenti registrati)
 10. FrontEnd finestra <strong>Catalogo Spazi</strong>
 == Changelog ==
+= 1.1.1 =
+- <strong>Corretti</strong> limite di 5 spazi che potevano essere gestiti nel frontend
 = 1.1 =
 - <strong>Corretti</strong> limite di 5 spazi che potevano essere gestiti nel backend
 = 1.0 =

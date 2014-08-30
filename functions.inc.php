@@ -5,7 +5,7 @@
  * @package Prenotazioni
  * @author Scimone Ignazio
  * @copyright 2014-2099
- * @version 1.1
+ * @version 1.1.1
  */
  
 if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) { die('You are not allowed to call this page directly.'); }

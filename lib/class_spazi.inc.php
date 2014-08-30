@@ -5,7 +5,7 @@
  * @package Prenotazioni
  * @author Scimone Ignazio
  * @copyright 2014-2099
- * @version 1.1
+ * @version 1.1.1
  */
 
 class Spazi{
@@ -170,7 +170,7 @@ class Spazi{
 	function get_ListaSpazi($select_name,$id_name,$class){
 	$output = "<select name='$select_name' id='$id_name' class='$class'>\n";
 //	$output .= "\t<option value='0' selected='selected'>----</option>\n";
-	$myposts = get_posts('post_type=spazi');
+	$myposts = get_posts(array('post_type'=> 'spazi','posts_per_page'   => -1));
 	$Primo=true;
 	if ( ! empty( $myposts ) ) {	
 		foreach ( $myposts as $post ) {
@@ -191,7 +191,7 @@ class Spazi{
 
 	function get_ListaSpaziDiv(){
 		$Html= "";
-		$myposts = get_posts('post_type=spazi');
+		$myposts = get_posts(array('post_type'=> 'spazi','posts_per_page'   => -1));
 		foreach ( $myposts as $post ){
 			$thumb = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), 'medium' );
 			$Html.='
