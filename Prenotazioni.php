@@ -3,7 +3,7 @@
 Plugin Name:Prenotazioni
 Plugin URI: http://plugin.sisviluppo.info
 Description: Plugin utilizzato per delle risorse Aule, Sale conferenza, Laboratori, etc...
-Version:1.1.1
+Version:1.1.2
 Author: Scimone Ignazio
 Author URI: http://plugin.sisviluppo.info
 License: GPL2

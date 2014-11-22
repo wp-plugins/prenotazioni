@@ -5,7 +5,7 @@
  * @package Prenotazioni
  * @author Scimone Ignazio
  * @copyright 2014-2099
- * @version 1.1.1
+ * @version 1.1.2
  */
 
 function createTablePrenotazioni($data="",$visOreDisp="n"){
