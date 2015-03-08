@@ -5,7 +5,7 @@
  * @package Prenotazioni
  * @author Scimone Ignazio
  * @copyright 2014-2099
- * @version 1.1.2
+ * @version 1.2
  */
 
 class Spazi{
@@ -206,6 +206,10 @@ class Spazi{
 	}	
 	function get_Foto(){
 		return $this->Foto;
+	}
+	function get_Foto_By_ID($Id){
+		$thumb = wp_get_attachment_image_src( get_post_thumbnail_id($Id), 'thumbnail' );
+		return $thumb['0'];
 	}
 	function get_FirstID(){
 		return $this->IdPrimo;

@@ -3,7 +3,7 @@
 Plugin Name:Prenotazioni
 Plugin URI: http://plugin.sisviluppo.info
 Description: Plugin utilizzato per delle risorse Aule, Sale conferenza, Laboratori, etc...
-Version:1.1.2
+Version:1.2
 Author: Scimone Ignazio
 Author URI: http://plugin.sisviluppo.info
 License: GPL2
@@ -83,8 +83,8 @@ if (!class_exists('Plugin_Prenotazioni')) {
 	}
 	function nuovaPrenotazioneSpazi(){
 		global $Gest_Prenotazioni;
-		$ris=$Gest_Prenotazioni->newPrenotazione($_POST['data'],$_POST['OraI'],$_POST['Ore'],$_POST['IdS'],$_POST['Note']);
-		echo "Ho creato '.$ris.' appuntamento";
+		$ris=$Gest_Prenotazioni->newPrenotazione($_POST['data'],$_POST['OraI'],$_POST['Ore'],$_POST['IdS'],$_POST['NSet'],$_POST['Note']);
+		echo "<p id='TestoRisMemo'>Risultato prenotazione:<br />".$ris."</p>";
 		die();
 	}
 	function enqueue_scripts( $hook_suffix ) {
@@ -102,6 +102,14 @@ if (!class_exists('Plugin_Prenotazioni')) {
 		wp_register_style($this->plugin_name,  plugins_url( 'css/style.css', __FILE__ ));
         wp_enqueue_style( $this->plugin_name);
 		wp_enqueue_script( 'Prenotazioni-admin-fields', plugins_url('js/Prenotazioni.js', __FILE__ ));
+	    wp_enqueue_script('jquery-ui-widget');
+	    wp_enqueue_script('jquery-ui-tabs');
+        $myStyleUrl = plugins_url('css/style.css', __FILE__); 
+        $myStyleFile = Prenotazioni_DIR.'/css/style.css';
+        if ( file_exists($myStyleFile) ) {
+            wp_register_style($this->plugin_name, $myStyleUrl);
+            wp_enqueue_style( $this->plugin_name);
+        }
 	}
 	function Prenotazioni_styles() {
         $myStyleUrl = plugins_url('css/style.css', __FILE__); 
@@ -132,11 +140,15 @@ if (!class_exists('Plugin_Prenotazioni')) {
   		add_menu_page('Panoramica', 'Prenotazioni', 'manage_options', 'Prenotazioni',array( 'Plugin_Prenotazioni','show_menu'),Prenotazioni_URL."img/logo.png");
   		$parametri_page=add_submenu_page( 'Prenotazioni', 'Parametri', 'Parametri', 'manage_options', 'config', array( 'Plugin_Prenotazioni','show_menu'));
 		$prenotazioni_page=add_submenu_page( 'Prenotazioni', 'Prenotazioni', 'Prenotazioni', 'read', 'prenotazioni', array( 'Plugin_Prenotazioni','show_menu'));
+		$prenotazioni_my_page=add_submenu_page( 'Prenotazioni', 'Prenotazioni', 'Mie Prenotazioni', 'read', 'myprenotazioni', array( 'Plugin_Prenotazioni','show_menu'));
 }
 	
 	function show_menu() {
 		global $App_Prenotazioni,$Gest_Prenotazioni;
 		switch ($_REQUEST['page']){
+			case "myprenotazioni" :
+				$Gest_Prenotazioni->Tabella_Mie_Prenotazioni();		
+				break;
 			case "prenotazioni" :
 				$Gest_Prenotazioni->Tabella_Giornaliera_Prenotazioni();		
 				break;
