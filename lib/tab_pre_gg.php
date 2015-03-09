@@ -5,7 +5,7 @@
  * @package Prenotazioni
  * @author Scimone Ignazio
  * @copyright 2014-2099
- * @version 1.2
+ * @version 1.1.2
  */
 
 function createTablePrenotazioni($data="",$visOreDisp="n"){
@@ -23,10 +23,9 @@ function createTablePrenotazioni($data="",$visOreDisp="n"){
 	}
 	$data=pren_DateAdd(date("Y-m-d-H",current_time( 'timestamp', 0 ) ),"o",$Parametri["PrenEntro"]);
 //	print_r($StatoPrenotazioni[3]);
-
 	$numSpazi=count($spazi);
 	$MyID =get_current_user_id();
-	$HTML='
+	$HTML= '
 	    <div id="tabPrenotazioniSpazi">
 	    <input type="hidden" id="NumMaxOre" value="'.$Parametri['MaxOrePrenotabili'].'" />
 		<div id="dialog-form" title="Edit User" style="display:none;">  
@@ -50,14 +49,13 @@ function createTablePrenotazioni($data="",$visOreDisp="n"){
 		          <form>
 		            <fieldset>
 		            	<legend>Dati della prenotazione:</legend>
-		                <label>Numero Ore &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp:</label><select id="NumOrePren"></select><br />
-		                <label>Numero Settimane:</label><input type="number" min="1" max="20" id="NumeroSettimane" value="1"></select><br />
+		                <label>Numero Ore </label><select id="NumOrePren"></select><br />
 		                <label>Motivo Prenotazione</label><textarea rows="4" cols="40" id="notePrenotazione"></textarea>
+		                
 		            </fieldset>
 		        </form>
 		</div>
 		<div id="dialog-confirm" title="Cancellazione Prenotazione" style="display:none;"></div> 
-		<div id="dialog-infonew" title="Prenotazioni Memorizzate" style="display:none;"></div> 
 		<div id="dialog-help" title="Informazioni di utilizzo" style="display:none;">
 			<ul>
 				<li>Per <span style="font-weight:bold;color: #ff0000;">Cancellare</span> una prenotazione bisogna posizionarsi sul giorno della prenotazione attraverso il sitema di scorrimento o selezionando la data dal calendario e cliccare sull\'icona <img src="'.Prenotazioni_URL.'img/del.png" /></li>
@@ -96,19 +94,6 @@ function createTablePrenotazioni($data="",$visOreDisp="n"){
      		<tr>
                 <th style="background-color:#00FFCC">'.$i.'</th>';
   			for ($ns=1;$ns<=$numSpazi;$ns++){
-	            $D1=explode("/",$data_p);
-	            if($i<10)
-	            	$Hore="0".$i;
-	            else
-	            	$Hore=$i;
-	            $D1=$D1[2]."-".$D1[1]."-".$D1[0]."-".$Hore;
-//	            echo $D1."<->".$data."<br />";
-				if($D1>$data)
-	  				$Cancella='
-	  					<div style="display:inline;float:left;margin-top:3px;margin-left:5px;">
-									<img src="'.Prenotazioni_URL.'img/del.png" alt="Icona utente" class="DelPren" id="'.$StatoPrenotazioni[$ns][$i]["ID"].'"/>';
-				else
-					$Cancella="";
 				if (current_user_can( 'manage_options' ) or $StatoPrenotazioni[$ns][$i]["IDUser"]==$MyID)
 					$Info='abbr="'.str_replace('"',"'",$StatoPrenotazioni[$ns][$i]["Note"]).'"';
 				else 
@@ -157,7 +142,9 @@ function createTablePrenotazioni($data="",$visOreDisp="n"){
 								$HTML.= '
 							<div style="display:inline;float:left">
 								<img src="'.Prenotazioni_URL.'img/info.png" alt="Icona info" title="Prenotazione effettuata il: '.$StatoPrenotazioni[$ns][$i]["DataPren"].' <br />da: '.$StatoPrenotazioni[$ns][$i]["Motivo"].' <br />Note: '.str_replace('"',"'",$StatoPrenotazioni[$ns][$i]["Note"]).'" class="InfoPren"/>
-							</div>'.$Cancella;
+							</div>
+							<div style="display:inline;float:left;margin-top:3px;margin-left:5px;">
+								<img src="'.Prenotazioni_URL.'img/del.png" alt="Icona utente" class="DelPren" id="'.$StatoPrenotazioni[$ns][$i]["ID"].'"/>';
 					$HTML.='
 						</div>
 					</td>';
@@ -177,7 +164,9 @@ function createTablePrenotazioni($data="",$visOreDisp="n"){
 								<div style="display:inline;float:left">
 									<img src="'.Prenotazioni_URL.'img/info.png" alt="Icona info" title="Prenotazione effettuata il: '.$StatoPrenotazioni[$ns][$i]["DataPren"].' <br />da: '.$StatoPrenotazioni[$ns][$i]["Motivo"].' <br />Note: '.str_replace('"',"'",$StatoPrenotazioni[$ns][$i]["Note"]).'" class="InfoPren"/>
 									
-								</div>'.$Cancella.'
+								</div>
+								<div style="display:inline;float:left;margin-top:3px;">
+									<img src="'.Prenotazioni_URL.'img/del.png" alt="Icona utente" class="DelPren" id="'.$StatoPrenotazioni[$ns][$i]["ID"].'"/>
 								</div>';
 							$HTML.='
 						</td>';	
