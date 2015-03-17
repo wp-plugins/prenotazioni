@@ -70,6 +70,8 @@ jQuery.noConflict();
 				break;
 		}
 	});
+    $('#CartellePrenotazioni').tabs();
+
 	$(document).click(function(e) { //start function when Random button is clicked
 
 		if(e.target.className=="adminpreStyle"){
@@ -98,10 +100,11 @@ jQuery.noConflict();
 			$("#SpazioPre").text(desSpazio);
 			var NOP=$("#NumOrePren"),
 			    Note=$("#notePrenotazione"),
+			    NSet=$("#NumeroSettimane"),
 			    allFields = $( [] ).add( NOP ).add( Note );
 			$("#dialog-form").dialog({
 				resizable: false,
-				height:400,
+				height:420,
 				modal: true,
 				width: 440,
 				title: "Dati prenotazione",
@@ -109,7 +112,8 @@ jQuery.noConflict();
 					  		$.ajax({type: "post",url: "admin-ajax.php",data: { action: 'newPren', 
 					  															 data: dataPren, 
 					  															 OraI: OraI, 
-					  															  Ore: NOP.val(), 
+					  															  Ore: NOP.val(),
+					  															 NSet: NSet.val(), 
 					  														      IdS: Spazio,
 					  														     Note: Note.val()},
 								beforeSend: function() {$("#loading").fadeIn('fast');}, 
@@ -119,6 +123,26 @@ jQuery.noConflict();
 									           						 $("#tabPrenotazioniSpazi").html(html);
 					  	   			  					}
 										});
+			
+			var Testo=html.substr(html.indexOf("<p id='TestoRisMemo'>"),(html.length));
+			$('#dialog-infonew').html(Testo);	
+			$("#dialog-infonew").dialog( {
+				resizable: false,
+				height:600,
+				modal: true,
+				width: 600,
+				title: "Riepilogo Prenotazioni Effettuate",
+				buttons: [ { text: "Ok", 
+							  click: function() { $( this ).dialog( "close" ); } 
+						    } 
+						 ]
+			});										
+										
+										
+										
+										
+										
+										
 								}
 							});   	
 			        		$( this ).dialog( "close" );},
@@ -161,14 +185,50 @@ jQuery.noConflict();
 						 ]
 			});
 		}
-		if(e.target.className=="InfoPren"){
-			$('#dialog-confirm').html(e.target.attributes['title'].value);	
-			$( "#dialog-confirm" ).dialog( {
+		if(e.target.className=="CancMiaPren"){
+			var NumeroPrenotazione=e.target.attributes['id'].value;
+			var TestoDialogo='<p style="font-size: 12px;">Questa operazione cancellerà la prenotazione<br /> n° '+NumeroPrenotazione+'<br /> Sei sicuro di voler continuare?</p>';
+			$('#dialog-confirm').html(TestoDialogo);	
+			$("#dialog-confirm").dialog( {
 				resizable: false,
 				height:200,
 				modal: true,
 				width: 350,
+				title: "Conferma Cancellazione",
+				buttons: [ { text: "Cancella la prenotazione", 
+							  click:function() {
+							  	//alert("ci passo");
+							  		$.ajax({type: "post",url: "admin-ajax.php",data: { action: 'delPren', id: NumeroPrenotazione},
+										beforeSend: function() {$("#loading").fadeIn('fast');}, 
+										success: function(html){location.reload();}
+									});   	
+							  		$( this ).dialog( "close" ); }
+							 } ,
+						     { text: "Annulla", 
+							  click: function() { $( this ).dialog( "close" ); } 
+						     } 
+						 ]
+			});
+		}
+		if(e.target.className=="InfoPren"){
+			$('#dialog-confirm').html(e.target.attributes['abr'].value);	
+			$( "#dialog-confirm" ).dialog( {
+				resizable: false,
+				height:300,
+				modal: true,
+				width: 400,
 				title: "Dati della Prenotazione" ,
+				buttons: {Ok: function() {$( this ).dialog( "close" );}}
+			});
+		}
+		if(e.target.className=="UserPren"){
+			$('#dialog-confirm').html(e.target.attributes['abr'].value);	
+			$( "#dialog-confirm" ).dialog( {
+				resizable: false,
+				height:180,
+				modal: true,
+				width: 350,
+				title: "Autore della Prenotazione" ,
 				buttons: {Ok: function() {$( this ).dialog( "close" );}}
 			});
 		}
@@ -206,12 +266,6 @@ jQuery.noConflict();
 	});
 	$( "#max-ore-valore" ).val( $( "#max-ore-range" ).slider( "value" ) );
 	$( ".navigazioneGiorni" ).click(function() {
-		var eleData=$("#dataCal").text();
-		//alert("-"+$("#dataCal").text()+"-");
-		eleData=eleData.split("/");
-		var inc=1;
-		if ($(this).attr('value')=='<<')
-			inc=-1;
 		var giorni = new Array();
      		giorni[0] = 'Domenica';
      		giorni[1] = 'Lunedì';
@@ -220,22 +274,27 @@ jQuery.noConflict();
 		     giorni[4] = 'Giovedì';
 		     giorni[5] = 'Venerdì';
 		     giorni[6] = 'Sabato';
+		var eleData=$("#dataCal").text();
+		eleData=eleData.split("/");
+		var inc=1;
+		if ($(this).attr('value')=='<<')
+			inc=-1;
+		var day = 1000 * 60 *60 * 24;
 		var data=new Date();
-		data.setDate(parseInt(eleData[0], 10)+inc);
-		data.setMonth(parseInt(eleData[1], 10)-1);
 		data.setFullYear(parseInt(eleData[2], 10));
-		$("#giornodataCal").text(giorni[data.getDay()]);
-		if(data.getDate()<10)
-			var gg='0'+data.getDate();
-		else
-			var gg=data.getDate();
-		if((data.getMonth()+1)<10)
-			var mm='0'+(data.getMonth()+1);
-		else
-			var mm=(data.getMonth()+1);			
-		var newData=gg+'/'+mm+'/'+data.getFullYear();
-		$("#dataCal").text(newData);
-		$("#dataCalVal").attr('value',newData);
+		data.setMonth(parseInt(eleData[1], 10)-1);
+		data.setDate(parseInt(eleData[0], 10));
+		var newData=new Date(data.getTime()+(day*inc));
+		var gg=newData.getDate();
+		if(gg<10)
+			gg='0'+gg;
+		var mm=newData.getMonth()+1;
+		if (mm<10)
+			var mm='0'+mm;
+		var NuovaData=gg+'/'+mm+'/'+newData.getFullYear();
+		$("#giornodataCal").text(giorni[newData.getDay()]);
+		$("#dataCal").text(NuovaData);
+		$("#dataCalVal").attr('value',NuovaData);
 		$.ajax({type: "post",url: "admin-ajax.php",data: { action: 'prenSpazi', data: $("#dataCalVal").attr('value')},
 			beforeSend: function() {$("#loading").fadeIn('fast');}, 
 			success: function(html){$("#loading").fadeOut('fast');

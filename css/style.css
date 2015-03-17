@@ -69,16 +69,12 @@ table.settimanale td {
 #CartellePrenotazioni{
 	height: 580px;
 }
-#CartellePrenotazioni #CartellaP2{
+#CartellePrenotazioni #CartellaP1,#CartellePrenotazioni  #CartellaP2,#CartellePrenotazioni  #CartellaP3{
 	height: 520px;
 	overflow-y:scroll;
 	overflow-x:hidden;
 }
-#CartellePrenotazioni #CartellaP3{
-	height: 520px;
-	overflow-y:scroll;
-	overflow-x:hidden;
-}
+
 #CampiPrenotazioniSpazi{
 	height: 500px;
 }

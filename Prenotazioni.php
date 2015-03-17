@@ -3,7 +3,7 @@
 Plugin Name:Prenotazioni
 Plugin URI: http://plugin.sisviluppo.info
 Description: Plugin utilizzato per delle risorse Aule, Sale conferenza, Laboratori, etc...
-Version:1.1.2
+Version:1.2
 Author: Scimone Ignazio
 Author URI: http://plugin.sisviluppo.info
 License: GPL2
@@ -83,25 +83,32 @@ if (!class_exists('Plugin_Prenotazioni')) {
 	}
 	function nuovaPrenotazioneSpazi(){
 		global $Gest_Prenotazioni;
-		$ris=$Gest_Prenotazioni->newPrenotazione($_POST['data'],$_POST['OraI'],$_POST['Ore'],$_POST['IdS'],$_POST['Note']);
-		echo "Ho creato '.$ris.' appuntamento";
+		$ris=$Gest_Prenotazioni->newPrenotazione($_POST['data'],$_POST['OraI'],$_POST['Ore'],$_POST['IdS'],$_POST['NSet'],$_POST['Note']);
+		echo "<p id='TestoRisMemo'>Risultato prenotazione:<br />".$ris."</p>";
 		die();
 	}
 	function enqueue_scripts( $hook_suffix ) {
 		wp_enqueue_script('jquery');
+	    wp_enqueue_script('jquery-ui-core');
 		wp_enqueue_script( 'jquery-ui-datepicker', '', array('jquery'));
+		wp_enqueue_script('jquery-ui-widget');
+		wp_enqueue_script('jquery-ui-tabs', false, array('jquery'), false, false);
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_script( 'wp-color-picker');
 		wp_enqueue_script('jquery-ui-tooltip');
 		wp_enqueue_script('jquery-ui-dialog');
 		wp_enqueue_style( 'wp-jquery-ui-dialog' );
-		//wp_enqueue_style('jquery-ui-dialog');
-		//wp_enqueue_script('jquery-ui-selectable');
 		wp_enqueue_script('jquery-ui-slider', false, array('jquery'), false, false);
 		wp_enqueue_style( 'jquery.ui.theme', plugins_url( 'css/jquery-ui-custom.css', __FILE__ ) );
 		wp_register_style($this->plugin_name,  plugins_url( 'css/style.css', __FILE__ ));
         wp_enqueue_style( $this->plugin_name);
 		wp_enqueue_script( 'Prenotazioni-admin-fields', plugins_url('js/Prenotazioni.js', __FILE__ ));
+       $myStyleUrl = plugins_url('css/style.css', __FILE__); 
+        $myStyleFile = Prenotazioni_DIR.'/css/style.css';
+        if ( file_exists($myStyleFile) ) {
+            wp_register_style($this->plugin_name, $myStyleUrl);
+            wp_enqueue_style( $this->plugin_name);
+        }
 	}
 	function Prenotazioni_styles() {
         $myStyleUrl = plugins_url('css/style.css', __FILE__); 
@@ -129,14 +136,18 @@ if (!class_exists('Plugin_Prenotazioni')) {
 		wp_enqueue_script('Prenotazioni-FrontEnd', plugins_url('js/Prenotazioni_FrontEnd.js', __FILE__ ));
 	}
 	static function add_menu(){
-  		add_menu_page('Panoramica', 'Prenotazioni', 'manage_options', 'Prenotazioni',array( 'Plugin_Prenotazioni','show_menu'),Prenotazioni_URL."img/logo.png");
+  		add_menu_page('Panoramica', 'Prenotazioni', 'read', 'Prenotazioni',array( 'Plugin_Prenotazioni','show_menu'),Prenotazioni_URL."img/logo.png");
   		$parametri_page=add_submenu_page( 'Prenotazioni', 'Parametri', 'Parametri', 'manage_options', 'config', array( 'Plugin_Prenotazioni','show_menu'));
 		$prenotazioni_page=add_submenu_page( 'Prenotazioni', 'Prenotazioni', 'Prenotazioni', 'read', 'prenotazioni', array( 'Plugin_Prenotazioni','show_menu'));
+		$prenotazioni_my_page=add_submenu_page( 'Prenotazioni', 'Prenotazioni', 'Mie Prenotazioni', 'read', 'myprenotazioni', array( 'Plugin_Prenotazioni','show_menu'));
 }
 	
 	function show_menu() {
 		global $App_Prenotazioni,$Gest_Prenotazioni;
 		switch ($_REQUEST['page']){
+			case "myprenotazioni" :
+				$Gest_Prenotazioni->Tabella_Mie_Prenotazioni();		
+				break;
 			case "prenotazioni" :
 				$Gest_Prenotazioni->Tabella_Giornaliera_Prenotazioni();		
 				break;
