@@ -62,7 +62,7 @@ function createTablePrenotazioni($data="",$visOreDisp="n"){
 			<ul>
 				<li>Per <span style="font-weight:bold;color: #ff0000;">Cancellare</span> una prenotazione bisogna posizionarsi sul giorno della prenotazione attraverso il sitema di scorrimento o selezionando la data dal calendario e cliccare sull\'icona <img src="'.Prenotazioni_URL.'img/del.png" /></li>
 				<li>Per <span style="font-weight:bold;color: #ff0000;">inserire</span> una nuova prenotazione bisogna cliccare sulla cella della prima ora di prenotazione, al rilascio si aprir&agrave; una finestra nella quale bisogna inserire il numero delle ore da prenotare, il motivo della prenotazione e confermare</li>
-				<li>Per <span style="font-weight:bold;color: #ff0000;">Visualizzare le Informazioni</span> di una prenotazione bisogna cliccare sull\'icona <img src="'.Prenotazioni_URL.'img/info.png" /></li>
+				<li>Per <span style="font-weight:bold;color: #ff0000;">Visualizzare le Informazioni</span> di una prenotazione bisogna cliccare sull\'icona <img src="'.Prenotazioni_URL.'img/Info.png" /></li>
 				<li>Per <span style="font-weight:bold;color: #ff0000;">Visualizzare Informazioni di uno spazio</span> basta posizionare il mouse sul nome dello spazio presente ulla prima riga della tabella</li>
 			</ul>
 		</div>	 
@@ -156,7 +156,7 @@ function createTablePrenotazioni($data="",$visOreDisp="n"){
 							if (current_user_can( 'manage_options' ) or $StatoPrenotazioni[$ns][$i]["IDUser"]==$MyID)
 								$HTML.= '
 							<div style="display:inline;float:left;cursor: pointer;">
-								<img src="'.Prenotazioni_URL.'img/info.png" alt="Icona info" abr="Prenotazione effettuata il: '.$StatoPrenotazioni[$ns][$i]["DataPren"].' <br />da: '.$StatoPrenotazioni[$ns][$i]["Motivo"].' <br />Note: '.str_replace('"',"'",$StatoPrenotazioni[$ns][$i]["Note"]).'" class="InfoPren"/>
+								<img src="'.Prenotazioni_URL.'img/Info.png" alt="Icona info" abr="Prenotazione effettuata il: '.$StatoPrenotazioni[$ns][$i]["DataPren"].' <br />da: '.$StatoPrenotazioni[$ns][$i]["Motivo"].' <br />Note: '.str_replace('"',"'",$StatoPrenotazioni[$ns][$i]["Note"]).'" class="InfoPren"/>
 							</div>'.$Cancella;
 					$HTML.='
 						</div>
@@ -175,7 +175,7 @@ function createTablePrenotazioni($data="",$visOreDisp="n"){
 							if (current_user_can( 'manage_options' ) or $StatoPrenotazioni[$ns][$i]["IDUser"]==$MyID)
 								$HTML.= '
 								<div style="display:inline;float:left;cursor: pointer;">
-									<img src="'.Prenotazioni_URL.'img/info.png" alt="Icona info" abr="Prenotazione effettuata il: '.$StatoPrenotazioni[$ns][$i]["DataPren"].' <br />da: '.$StatoPrenotazioni[$ns][$i]["Motivo"].' <br />Note: '.str_replace('"',"'",$StatoPrenotazioni[$ns][$i]["Note"]).'" class="InfoPren"/>
+									<img src="'.Prenotazioni_URL.'img/Info.png" alt="Icona info" abr="Prenotazione effettuata il: '.$StatoPrenotazioni[$ns][$i]["DataPren"].' <br />da: '.$StatoPrenotazioni[$ns][$i]["Motivo"].' <br />Note: '.str_replace('"',"'",$StatoPrenotazioni[$ns][$i]["Note"]).'" class="InfoPren"/>
 									
 								</div>'.$Cancella.'
 								</div>';
