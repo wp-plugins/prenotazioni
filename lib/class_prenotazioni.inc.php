@@ -5,7 +5,7 @@
  * @package Prenotazioni
  * @author Scimone Ignazio
  * @copyright 2014-2099
- * @version 1.2
+ * @version 1.3
  */
 
 class Prenotazioni{
@@ -292,11 +292,12 @@ class Prenotazioni{
 		return true;
 	}
 	
-	function newPrenotazione($data,$orai,$ore,$IdSpazio,$Nset,$note){
+	function newPrenotazione($data,$orai,$ore,$IdSpazio,$Nset=1,$note=""){
 		global $wpdb;
     	$dataS=explode("/",$data);
     	$Data=$dataS[2]."-".$dataS[1]."-".$dataS[0];
     	$PrenCre="";
+ //   	echo "ci passo data ".$data." orai ".$orai." n_ore ".$ore." spazio".$IdSpazio." num set".$Nset." note".$note;
 		for($i=0;$i<$Nset;$i++){
 			if($this->IsPossibilePrenotare($IdSpazio,$Data,$orai,$ore))
 			 	if ( false === $wpdb->insert($wpdb->table_prenotazioni,array('IPAddress' => $_SERVER['REMOTE_ADDR'],
@@ -314,6 +315,7 @@ class Prenotazioni{
 			$Data=explode("-",$Data);
 			$Data = date('Y-m-d', strtotime("+1 week",mktime(0, 0, 0, $Data[1], $Data[2], $Data[0])));
 	 	}
+	 	
 	 	return $PrenCre;
 	}
 }

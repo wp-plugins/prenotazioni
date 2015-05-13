@@ -5,7 +5,7 @@
  * @package Prenotazioni
  * @author Scimone Ignazio
  * @copyright 2014-2099
- * @version 1.2
+ * @version 1.3
  **/
 
 if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) { die('You are not allowed to call this page directly.'); }
@@ -15,8 +15,12 @@ if (!is_user_logged_in()){
 	echo $G_Spaces->get_ListaSpaziDiv();
 }else{
 	if (isset($_POST['navigazioneGiorni']) and $_POST['navigazioneGiorni']=="Prenota"){
-		$Gest_Prenotazioni->newPrenotazione($_POST['DataPrenotazione'],$_POST['OraInizioPrenotazione'],$_POST['NumOrePren'],$_POST['SpazioP'],$_POST['notePrenotazione']);
-	}
+		$ris=$Gest_Prenotazioni->newPrenotazione($_POST['DataPrenotazione'],$_POST['OraInizioPrenotazione'],$_POST['NumOrePren'],$_POST['SpazioP'],$_POST['NumSet'],$_POST['notePrenotazione']);
+		
+		echo '<div id="message" style="border: thin inset;background-color: #FFFACD;">
+			<p>Risultato prenotazione:<br />'.$ris.'</p></div>
+      		<meta http-equiv="refresh" content="5;url='.get_permalink().'"/>';	
+	}else{
 		$Parametri=get_Pre_Parametri();
 		$Stat="
 	 	<strong>Ultime 5 prenotazione passate</strong>
@@ -114,7 +118,7 @@ if (!is_user_logged_in()){
 					</div>
 					<div style="clear:both;"></div>
 					<div style="float:left;">
-						<label>Ora Inizio:</label>
+						<label>Ora Inizio: <span id="VisOraInizio"></span></label>
 						<div id="InizioPre">
 							'.createTablePrenotazioniSpazio($G_Spaces->get_FirstID()).'
 						</div>
@@ -125,6 +129,19 @@ if (!is_user_logged_in()){
 							<select id="NumOrePren" name="NumOrePren">
 								<option value="0">----</option>		
 							</select>
+							<label> N&deg; settimane:</label> 
+							<select id="NumSet" name="NumSet">
+								<option value="1">1</option>
+								<option value="1">2</option>
+								<option value="1">3</option>
+								<option value="1">4</option>
+								<option value="1">5</option>
+								<option value="1">6</option>
+								<option value="1">7</option>
+								<option value="1">8</option>
+								<option value="1">9</option>
+								<option value="1">10</option>		
+							</select>
 						</p>
 						<p>
 							<label>Motivo Prenotazione:</label><br />
@@ -134,7 +151,7 @@ if (!is_user_logged_in()){
 							<input type="hidden" id="OraInizioPrenotazione" value="" name="OraInizioPrenotazione"/>
 							<input type="hidden" id="UrlAjax" value="'.home_url().'/wp-admin/admin-ajax.php" name="UrlAjax"/>
 							<input type="hidden" id="ColPrenotato" value="'.$Parametri['ColPrenotato'].'" />
-							<input type="hidden" id="OranIzio" value="'.$Parametri['OraInizio'].'" />
+							<input type="hidden" id="OraInizio" value="'.$Parametri['OraInizio'].'" />
 							<input type="hidden" id="OraFine" value="'.$Parametri['OraFine'].'" />
 							<input type="hidden" id="NumMaxOre" value="'.$Parametri['MaxOrePrenotabili'].'" />
 							<input type="hidden" id="MinOrePrima" value="'.$Parametri['PrenEntro'].'" />
@@ -161,6 +178,7 @@ if (!is_user_logged_in()){
 				<div id=\"CartellaP3\">
 		              ".$G_Spaces->get_ListaSpaziDiv()."
 				</div>			
-			</div>";
+			</div>";			
+	}
 }
 ?>

@@ -2,8 +2,8 @@
 Contributors: Scimone Ignazio
 Tags: Prenotazione spazi, Prenotazioni Aule,booking meeting rooms
 Requires at least: 3.8
-Tested up to: 4.1.1
-Stable tag: 1.2
+Tested up to: 4.2.2
+Stable tag: 1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -36,6 +36,8 @@ Di seguito sono riportati i passi necessari per l'installazione del plugin. la p
 9. FrontEnd finestra <strong>Statistiche</strong> (solo per utenti registrati)
 10. FrontEnd finestra <strong>Catalogo Spazi</strong>
 == Changelog ==
+= 1.3 =
+- <strong>Corretti</strong> bug nella procedura di prenotazione nel frontend, mancava il parametro numero settimane (prenotazioni ripetute)
 = 1.2 =
 - <strong>Corretti</strong> piccoli bugs
 - <strong>Aggiunto</strong> parametro numero settimane nelle prenotazioni del backend che permette di realizzare prenotazioni multiple. 

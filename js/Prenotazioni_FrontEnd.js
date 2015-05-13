@@ -14,6 +14,7 @@ function($){
 			e.target.style="background-color:"+ColSel;
 			$("#OldSel").attr('value',e.target.id);
 			$("#OraInizioPrenotazione").attr('value',OraI);
+			$("#VisOraInizio").text(OraI);
 			$("#NumOrePren").empty();
 			do{
 				Maxore++;
